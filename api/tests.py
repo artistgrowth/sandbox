@@ -42,7 +42,7 @@ class QuestionTests(BaseTestCase):
 
         self.assertEqual(Question.objects.count(), expected_count)
 
-        url = reverse("question-list")
+        url = reverse("question-bulk-update")
         self.authenticate()
 
         # Build a payload for the request.  In this case we're sending a non-standard payload
@@ -55,7 +55,7 @@ class QuestionTests(BaseTestCase):
         # Send the request - we're doing a partial update in this case (i.e. PATCH vs a PUT)
         response, data = self.request(HttpMethod.PATCH, url, data=payload, authenticated=True)
         self.assertResponseStatus(response, status_code=status.HTTP_200_OK)
-        self.assertEqual(len(data["results"]), expected_count)
+        self.assertEqual(len(data), expected_count)
 
     def test_has_date_created(self):
         """
