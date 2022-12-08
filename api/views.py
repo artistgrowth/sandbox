@@ -33,7 +33,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows polls to be viewed or edited.
     """
-    queryset = Question.objects.all().prefetch_related('choice_set')
+
+    # Add .order_by() to ensure pagination yields consistent results
+    queryset = Question.objects.all().prefetch_related('choice_set').order_by('-date_created')
     serializer_class = QuestionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
