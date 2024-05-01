@@ -28,3 +28,4 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Question
         fields = ["url", "question_text", "pub_date", "choices", "date_created"]
+        list_serializer_class = serializers.ListSerializer

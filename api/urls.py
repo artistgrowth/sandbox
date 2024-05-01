@@ -1,9 +1,9 @@
 from django.urls import include, path
-from rest_framework import routers
 
 from . import views
+from .routers import CustomRouter
 
-router = routers.DefaultRouter()
+router = CustomRouter()
 router.register(r"users", views.UserViewSet)
 router.register(r"groups", views.GroupViewSet)
 router.register(r"questions", views.QuestionViewSet)

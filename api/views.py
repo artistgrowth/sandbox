@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 from polls.models import Question, Choice
 from .serializers import UserSerializer, GroupSerializer, QuestionSerializer, ChoiceSerializer
@@ -31,6 +32,26 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.prefetch_related("choice_set").all()
     serializer_class = QuestionSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def bulk_update(self, request):
+        id_to_question_text = {}
+        for data in request.data:
+            url_parts = data["url"].strip("/").split("/")
+            question_id = int(url_parts[-1])
+            id_to_question_text[question_id] = data["question_text"]
+
+        instances = Question.objects.filter(id__in=id_to_question_text.keys())
+
+        serializer = self.get_serializer(instances, data=request.data, many=True, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        updates = []
+        for question in instances:
+            updates.append(serializer.child.update(question, {'question_text':id_to_question_text[question.id]}))
+
+        Question.objects.bulk_update(updates, ["question_text"])
+
+        return Response({"results": serializer.data})
 
 
 class ChoiceViewSet(viewsets.ModelViewSet):
