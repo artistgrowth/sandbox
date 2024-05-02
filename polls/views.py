@@ -1,10 +1,10 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
-from polls.models import Question, Choice
+from polls.models import Choice, Question
 
 
 class IndexView(generic.ListView):
@@ -41,10 +41,14 @@ def vote(request, question_id):
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
-        return render(request, "polls/detail.html", {
-            "question": question,
-            "error_message": "You didn't select a choice.",
-        })
+        return render(
+            request,
+            "polls/detail.html",
+            {
+                "question": question,
+                "error_message": "You didn't select a choice.",
+            },
+        )
     else:
         selected_choice.votes += 1
         selected_choice.save()

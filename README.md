@@ -1,4 +1,5 @@
-# Summary 
+# Summary
+
 This is a sample Django application that has some failing tests.  It's built off the example project in
 [Writing your first Django app](https://docs.djangoproject.com/en/dev/intro/tutorial01/).
 
@@ -7,18 +8,17 @@ As a programming exercise do the following:
 * Make a pull request that fixes the broken tests.
 
 ## Instructions for Running
-* Create a new virtual environment
 
-      python -m venv sandbox-env
-* Switch to the new environment
-  
-      source sandbox-env/bin/activate 
-* Install requirements
+* to run tests:
 
-      pip install --requirement=requirements.txt
-* Run tests
+    docker-compose run --service-ports app-test
 
-      python manage.py test
-* Run the site (user is `admin` and password is `asdfASDF1234`)
+* to run (user is `admin` and password is `asdfASDF1234`):
 
-      python manage.py runserver 
+    docker-compose run --service-ports app
+
+## Improvements I added
+
+* Added Dockerfile and docker-compose to have it in container.
+* Updated requirements.txt.
+* Added some linters and checkers, included: black, isort, flake8, pre-commit.

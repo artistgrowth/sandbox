@@ -1,11 +1,11 @@
 import logging
 
-import faker
 from django.urls import reverse
 from django.utils import timezone
+import faker
 from rest_framework import status
 
-from polls.models import Question, Choice
+from polls.models import Choice, Question
 from tests import BaseTestCase, HttpMethod
 
 fake = faker.Faker()
@@ -20,6 +20,7 @@ class QuestionTests(BaseTestCase):
     i.e. There should be no changes to this file.  Instead, find the areas in the application to augment
     and fix the failing tests.
     """
+
     __test__ = True
 
     def create_question(self):
@@ -49,8 +50,12 @@ class QuestionTests(BaseTestCase):
         # that includes multiple objects to update.
         payload = []
         for obj in Question.objects.all():
-            payload.append(dict(url=reverse("question-detail", kwargs=dict(pk=obj.pk)),
-                                question_text=fake.bs()))
+            payload.append(
+                dict(
+                    url=reverse("question-detail", kwargs=dict(pk=obj.pk)),
+                    question_text=fake.bs(),
+                ),
+            )
 
         # Send the request - we're doing a partial update in this case (i.e. PATCH vs a PUT)
         response, data = self.request(HttpMethod.PATCH, url, data=payload, authenticated=True)

@@ -1,13 +1,13 @@
 import collections
+from json import dumps, loads
 import logging
-from json import loads, dumps
 from typing import Optional
 
-import faker
 from django import http
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils.encoding import force_str
+import faker
 
 fake = faker.Faker()
 
@@ -89,15 +89,19 @@ class BaseTestCase(TestCase):
         except UnicodeDecodeError:
             # Probably not text. Leave it as bytes repr
             content = str(response.content)
-        message = f"\n{self.format_request_info(response)}\nReceived status code => {response.status_code}, " \
-                  f"expected status code => {status_code}, content => {content or '[content empty]'}"
+        message = (
+            f"\n{self.format_request_info(response)}\nReceived status code => {response.status_code}, "
+            f"expected status code => {status_code}, content => {content or '[content empty]'}"
+        )
         self.assertEqual(response.status_code, status_code, msg=message)
 
     def log_request_response(self, request_headers, request_data, response):
         content_data = None
 
         if "application/json" in response.get("content-type", ""):
-            content_data = loads(response.content, object_pairs_hook=collections.OrderedDict) if response.content else content_data
+            content_data = (
+                loads(response.content, object_pairs_hook=collections.OrderedDict) if response.content else content_data
+            )
         else:
             # We may be potentially returning something else entirely in this case just render it for debugging purposes
             content_data = response.content
@@ -117,25 +121,29 @@ class BaseTestCase(TestCase):
             request_path = self.format_request_info(response)
 
             # We may occasionally need to log things that can't be encoded easily via ascii codec to unicode
-            logger.debug("%s::request =>\n\n%s%s%s\n%s\nHTTP %s %s\n%s\n%s\n",
-                         self.__class__.__name__,
-                         request_path,
-                         request_headers.rstrip(),
-                         logged_data,
-                         "-" * 120,
-                         response.status_code,
-                         response.reason_phrase,
-                         response.serialize_headers().decode("utf-8"),
-                         _format_data(content_data))
+            logger.debug(
+                "%s::request =>\n\n%s%s%s\n%s\nHTTP %s %s\n%s\n%s\n",
+                self.__class__.__name__,
+                request_path,
+                request_headers.rstrip(),
+                logged_data,
+                "-" * 120,
+                response.status_code,
+                response.reason_phrase,
+                response.serialize_headers().decode("utf-8"),
+                _format_data(content_data),
+            )
         return content_data
 
-    def request(self,  # type: ignore
-                method: HttpMethod,
-                url: str,
-                data=None,
-                authenticated=True,
-                content_type="application/json",
-                **extra):
+    def request(
+        self,  # type: ignore
+        method: HttpMethod,
+        url: str,
+        data=None,
+        authenticated=True,
+        content_type="application/json",
+        **extra,
+    ):
 
         # Go ahead and encode data into a JSON string unless it's data that should be applied to
         # query strings.  In that case we just leave it alone and let the Client handle it
