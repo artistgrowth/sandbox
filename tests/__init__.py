@@ -7,6 +7,7 @@ from django import http
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils.encoding import force_str
+
 import faker
 
 fake = faker.Faker()

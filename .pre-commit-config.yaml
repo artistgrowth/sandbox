@@ -14,7 +14,8 @@ repos:
         (?x)^(
           static/|
           venv/|
-          migrations/
+          migrations/|
+          .idea/
         )
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.6.0
@@ -29,7 +30,8 @@ repos:
         (?x)^(
           static/|
           venv/|
-          migrations/
+          migrations/|
+          .idea/
         )
 - repo: https://github.com/asottile/add-trailing-comma
   rev: v3.1.0
@@ -38,7 +40,8 @@ repos:
       exclude: |
         (?x)(
           ^venv/|
-          migrations/
+          migrations/|
+          .idea/
         )
 - repo: https://github.com/asottile/pyupgrade
   rev: v3.15.2
