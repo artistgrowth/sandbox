@@ -22,3 +22,8 @@ As a programming exercise do the following:
 * Added Dockerfile and docker-compose to have it in container.
 * Updated requirements.txt.
 * Added some linters and checkers, included: black, isort, flake8, pre-commit.
+* Fixed tests.
+* Added QuestionListSerializer, to handle update of many objects (only patch for now).
+* Added CustomRouter to handle additional_routes (for example patch).
+* Added migration in poll adding date_created.
+* Added github CI to run tests.
