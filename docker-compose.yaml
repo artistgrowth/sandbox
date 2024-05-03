@@ -10,7 +10,6 @@ services:
       - 8000:8000
     volumes:
       - .:/code
-      - ./data:/data
   app-bash:
     build: .
     command: /bin/bash -c "make install &&
@@ -21,7 +20,6 @@ services:
       - 8000:8000
     volumes:
       - .:/code
-      - ./data:/data
   app-test:
     build: .
     command: /bin/bash -c "make install &&
