@@ -12,5 +12,6 @@ router.register(r"choices", views.ChoiceViewSet)
 # app_name = "api"
 urlpatterns = [
     path("", include(router.urls)),
+    #path("questions/", views.QuestionViewSet.as_view(actions={'get': 'list', 'post': 'create'}), name="api-question"),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework"))
 ]

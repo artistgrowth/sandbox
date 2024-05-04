@@ -24,6 +24,7 @@ class ChoiceSerializer(serializers.HyperlinkedModelSerializer):
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     choices = ChoiceSerializer(source="choice_set", many=True)
+   
 
     class Meta:
         model = Question
