@@ -75,8 +75,8 @@ class QuestionTests(BaseTestCase):
         self.assertIn("url", data)
         self.assertIn("question_text", data)
         self.assertIn("choices", data)
-        self.assertIn("pub_date", data, msg="date_created isn't in the serialized data yet")
-        self.assertIsNotNone(data["pub_date"])
+        self.assertIn("date_created", data, msg="date_created isn't in the serialized data yet")
+        self.assertIsNotNone(data["date_created"])
 
     def test_query_count_is_off(self):
         """
