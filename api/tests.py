@@ -11,7 +11,7 @@ from tests import BaseTestCase, HttpMethod
 fake = faker.Faker()
 
 logger = logging.getLogger(__name__)
-
+bulk_update_sub_route = "bulk_update/"
 
 class QuestionTests(BaseTestCase):
     """
@@ -33,7 +33,6 @@ class QuestionTests(BaseTestCase):
         """
         Augment the endpoint to handle updating multiple objects within a single request.
         """
-        print("started patching test")
         # Create some test objects
         expected_count = 10
         self.assertFalse(Question.objects.exists())
@@ -43,8 +42,8 @@ class QuestionTests(BaseTestCase):
 
         self.assertEqual(Question.objects.count(), expected_count)
 
-        url = reverse("question-list") + "bulk_update/"
-        print("base url is: ", url)
+        url = reverse("question-list") + bulk_update_sub_route
+        print("reverse url: ", url)
         self.authenticate()
 
         # Build a payload for the request.  In this case we're sending a non-standard payload
@@ -55,7 +54,6 @@ class QuestionTests(BaseTestCase):
                                 id=obj.pk,
                                 question_text=fake.bs()))
 
-        print("payload is: ", payload)
         # Send the request - we're doing a partial update in this case (i.e. PATCH vs a PUT)
         response, data = self.request(HttpMethod.PATCH, url, data=payload, authenticated=True)
         self.assertResponseStatus(response, status_code=status.HTTP_200_OK)
@@ -72,7 +70,6 @@ class QuestionTests(BaseTestCase):
         """
         obj = self.create_question()
         url = reverse("question-detail", kwargs=dict(pk=obj.pk))
-        print("CREATION URL: ", url)
         response, data = self.request(HttpMethod.GET, url, authenticated=True)
         self.assertResponseStatus(response, status_code=status.HTTP_200_OK)
         self.assertIn("pub_date", data)
