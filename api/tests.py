@@ -43,7 +43,6 @@ class QuestionTests(BaseTestCase):
         self.assertEqual(Question.objects.count(), expected_count)
 
         url = reverse("question-list") + bulk_update_sub_route
-        print("reverse url: ", url)
         self.authenticate()
 
         # Build a payload for the request.  In this case we're sending a non-standard payload
