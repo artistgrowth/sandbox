@@ -11,6 +11,7 @@ router.register(r"choices", views.ChoiceViewSet)
 
 # app_name = "api"
 urlpatterns = [
+    path("questions/", views.QuestionViewSet.as_view({'patch': 'multi_update', 'get' : 'list'}), name='multi-update'),
     path("", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework"))
 ]
